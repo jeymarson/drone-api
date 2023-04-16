@@ -23,7 +23,7 @@ public class Medication {
     private double weight;
 
     @Size(min = 1, max = 255)
-    @Column(name = "code", nullable = false)
+    @Column(name = "code", unique = true, nullable = false)
     private String code;
 
     @Size(min = 1, max = 255)

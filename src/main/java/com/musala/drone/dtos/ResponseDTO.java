@@ -1,7 +1,10 @@
 package com.musala.drone.dtos;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseDTO {
     private int code;
     private String message;

@@ -3,12 +3,12 @@ package com.musala.drone.repositories;
 import com.musala.drone.DroneApplication;
 import com.musala.drone.models.Drone;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = DroneApplication.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@Transactional
 public class DroneRepositoryTest {
 
     @Autowired
@@ -40,6 +40,18 @@ public class DroneRepositoryTest {
             Drone drone = getMockDrone();
             drone.setModel(null);
             this.droneRepository.save(drone);
+        });
+
+        assertNotNull(exception);
+    }
+
+    @Test
+    public void createTwoDroneWithSameSerialShouldThrownException() {
+        Drone droneOne = getMockDrone();
+        Drone droneTwo = getMockDrone();
+        this.droneRepository.save(droneOne);
+        DataIntegrityViolationException exception = assertThrows(DataIntegrityViolationException.class, () -> {
+            this.droneRepository.save(droneTwo);
         });
 
         assertNotNull(exception);

@@ -6,6 +6,9 @@ import com.musala.drone.models.Drone;
 import com.musala.drone.models.Medication;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class TestUtils {
 
@@ -20,6 +23,15 @@ public class TestUtils {
         drone.setCreatedAt(ZonedDateTime.now().toLocalDateTime());
 
         return drone;
+    }
+
+    public static List<Drone> getListMockDrone(int count) {
+        List<Drone> drones = new ArrayList<>();
+        IntStream.range(0, count).forEach(i -> {
+            drones.add(getMockDrone());
+        });
+
+        return drones;
     }
 
     public static Medication getMockMedication() {

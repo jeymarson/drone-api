@@ -10,8 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.ZonedDateTime;
-
+import static com.musala.drone.utils.TestUtils.getMockMedication;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -25,7 +24,7 @@ public class MedicationRepositoryTest {
 
     @Test
     public void createMedicationShouldWorksCorrectly() {
-        Medication medication = this.getMockMedication();
+        Medication medication = getMockMedication();
 
         Medication saved = this.medicationRepository.save(medication);
 
@@ -35,22 +34,11 @@ public class MedicationRepositoryTest {
     @Test
     public void createDroneWithoutNameShouldThrownException() {
         DataIntegrityViolationException exception = assertThrows(DataIntegrityViolationException.class, () -> {
-            Medication medication = this.getMockMedication();
+            Medication medication = getMockMedication();
             medication.setName(null);
             this.medicationRepository.save(medication);
         });
 
         assertNotNull(exception);
-    }
-
-    private Medication getMockMedication() {
-        Medication medication = new Medication();
-        medication.setCode("CPDPOO02990373MKD");
-        medication.setImage("https://test_url");
-        medication.setWeight(22.3);
-        medication.setName("Test medication");
-        medication.setCreatedAt(ZonedDateTime.now().toLocalDateTime());
-
-        return  medication;
     }
 }

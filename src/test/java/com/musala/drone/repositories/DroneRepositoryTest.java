@@ -1,8 +1,6 @@
 package com.musala.drone.repositories;
 
 import com.musala.drone.DroneApplication;
-import com.musala.drone.constants.DroneModel;
-import com.musala.drone.constants.DroneState;
 import com.musala.drone.models.Drone;
 
 import org.junit.jupiter.api.Test;
@@ -13,9 +11,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.ZonedDateTime;
 import java.util.Optional;
 
+import static com.musala.drone.utils.TestUtils.getMockDrone;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -28,7 +26,7 @@ public class DroneRepositoryTest {
 
     @Test
     public void createDroneShouldWorksCorrectly() {
-        Drone drone = this.getMockDrone();
+        Drone drone = getMockDrone();
 
         Drone saved = this.droneRepository.save(drone);
 
@@ -39,7 +37,7 @@ public class DroneRepositoryTest {
     @Test
     public void createDroneWithoutModelShouldThrownException() {
         DataIntegrityViolationException exception = assertThrows(DataIntegrityViolationException.class, () -> {
-            Drone drone = this.getMockDrone();
+            Drone drone = getMockDrone();
             drone.setModel(null);
             this.droneRepository.save(drone);
         });
@@ -49,7 +47,7 @@ public class DroneRepositoryTest {
 
     @Test
     public void getDroneByIdShouldReturnDrone() {
-        Drone drone = this.getMockDrone();
+        Drone drone = getMockDrone();
 
         Drone saved = this.droneRepository.save(drone);
 
@@ -61,7 +59,7 @@ public class DroneRepositoryTest {
 
     @Test
     public void deleteByIdShouldDeleteCorrectly() {
-        Drone drone = this.getMockDrone();
+        Drone drone = getMockDrone();
 
         Drone saved = this.droneRepository.save(drone);
 
@@ -70,18 +68,5 @@ public class DroneRepositoryTest {
         Optional<Drone> found = this.droneRepository.findById(saved.getId());
 
         assertFalse(found.isPresent());
-    }
-
-    private Drone getMockDrone() {
-        Drone drone = new Drone();
-
-        drone.setBatteryCapacity(99);
-        drone.setModel(DroneModel.CRUISERWEIGHT);
-        drone.setState(DroneState.IDLE);
-        drone.setSerialNumber("110202993838387474");
-        drone.setWeightLimit(345.0f);
-        drone.setCreatedAt(ZonedDateTime.now().toLocalDateTime());
-
-        return drone;
     }
 }

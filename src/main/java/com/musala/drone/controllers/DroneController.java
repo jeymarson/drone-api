@@ -51,4 +51,10 @@ public class DroneController {
         this.droneService.deleteDroneById(id);
         return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(), ResponseMessage.SUCCESSFULLY_DELETE, null, null), HttpStatus.OK);
     }
+
+    @GetMapping("/available")
+    public ResponseEntity<ResponseDTO> getAvailableDrones() {
+        List<Drone> drones = this.droneService.getAvailableDrones();
+        return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(), ResponseMessage.SUCCESSFULLY_QUERY, drones, null), HttpStatus.OK);
+    }
 }

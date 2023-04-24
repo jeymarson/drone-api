@@ -93,4 +93,15 @@ public class DroneServiceTest {
         this.droneService.deleteDroneById(1l);
         verify(this.droneRepository, times(1)).deleteById(Mockito.eq(1l));
     }
+
+    @Test
+    public void getAvailableDroneShouldWorksCorrectly() {
+        List<Drone> list = getListMockDrone(10);
+        when(this.droneRepository.findAllByStateInAndBatteryCapacityGreaterThanEqual(Mockito.any(), Mockito.eq(25))).thenReturn(list);
+
+        List<Drone> droneList = this.droneService.getAvailableDrones();
+
+        verify(this.droneRepository, times(1)).findAllByStateInAndBatteryCapacityGreaterThanEqual(Mockito.any(), Mockito.eq(25));
+        assertEquals(10, droneList.size());
+    }
 }

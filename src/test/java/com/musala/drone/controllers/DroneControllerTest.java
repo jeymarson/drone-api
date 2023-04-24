@@ -101,4 +101,21 @@ public class DroneControllerTest {
         verify(droneService, times(1)).deleteDroneById(1L);
         assertEquals(ResponseMessage.SUCCESSFULLY_DELETE, responseDTO.getMessage());
     }
+
+    @Test
+    @DisplayName("Get all drones")
+    public void testGetAvailableDrones() {
+        Drone drone1 = getMockDrone();
+        drone1.setId(1L);
+        Drone drone2 = getMockDrone();
+        drone2.setId(2L);
+        List<Drone> droneList = Arrays.asList(drone1, drone2);
+        when(droneService.getAvailableDrones()).thenReturn(droneList);
+
+        ResponseDTO responseDTO = droneController.getAvailableDrones().getBody();
+        List<Drone> result = (List<Drone>) responseDTO.getData();
+
+        verify(droneService, times(1)).getAvailableDrones();
+        assertEquals(droneList, result);
+    }
 }

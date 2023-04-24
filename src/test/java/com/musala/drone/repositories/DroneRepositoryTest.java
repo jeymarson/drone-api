@@ -1,6 +1,7 @@
 package com.musala.drone.repositories;
 
 import com.musala.drone.DroneApplication;
+import com.musala.drone.constants.DroneState;
 import com.musala.drone.models.Drone;
 
 import jakarta.transaction.Transactional;
@@ -11,9 +12,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static com.musala.drone.utils.TestUtils.getMockDrone;
+import static com.musala.drone.utils.TestUtils.getMockDroneWithBatteryAndState;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -80,5 +84,17 @@ public class DroneRepositoryTest {
         Optional<Drone> found = this.droneRepository.findById(saved.getId());
 
         assertFalse(found.isPresent());
+    }
+
+    @Test
+    public void  getAvailableDrones() {
+        this.droneRepository.save(getMockDroneWithBatteryAndState(20, DroneState.DELIVERED));
+        this.droneRepository.save(getMockDroneWithBatteryAndState(80, DroneState.LOADED));
+        this.droneRepository.save(getMockDroneWithBatteryAndState(90, DroneState.DELIVERED));
+        this.droneRepository.save(getMockDroneWithBatteryAndState(20, DroneState.DELIVERED));
+
+        List<Drone> drones = this.droneRepository.findAllByStateInAndBatteryCapacityGreaterThanEqual(Arrays.asList(DroneState.DELIVERED), 25);
+
+        assertEquals(1, drones.size());
     }
 }

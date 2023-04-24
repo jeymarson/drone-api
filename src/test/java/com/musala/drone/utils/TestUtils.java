@@ -8,6 +8,7 @@ import com.musala.drone.models.Medication;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 public class TestUtils {
@@ -18,9 +19,17 @@ public class TestUtils {
         drone.setBatteryCapacity(99);
         drone.setModel(DroneModel.CRUISERWEIGHT);
         drone.setState(DroneState.IDLE);
-        drone.setSerialNumber("110202993838387474");
+        drone.setSerialNumber(UUID.randomUUID().toString());
         drone.setWeightLimit(345.0f);
         drone.setCreatedAt(ZonedDateTime.now().toLocalDateTime());
+
+        return drone;
+    }
+
+    public static Drone getMockDroneWithBatteryAndState(int battery, DroneState state) {
+        Drone drone = getMockDrone();
+        drone.setBatteryCapacity(battery);
+        drone.setState(state);
 
         return drone;
     }

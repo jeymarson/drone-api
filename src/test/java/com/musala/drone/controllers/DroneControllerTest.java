@@ -1,5 +1,7 @@
 package com.musala.drone.controllers;
 
+import com.musala.drone.constants.ResponseMessage;
+import com.musala.drone.dtos.ResponseDTO;
 import com.musala.drone.models.Drone;
 import com.musala.drone.services.DroneService;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +39,8 @@ public class DroneControllerTest {
         drone.setId(1L);
         when(droneService.createOrUpdateDrone(any(Drone.class))).thenReturn(drone);
 
-        Drone result = droneController.createDrone(drone);
+        ResponseDTO responseDTO = droneController.createDrone(drone).getBody();
+        Drone result = (Drone) responseDTO.getData();
 
         verify(droneService, times(1)).createOrUpdateDrone(drone);
         assertEquals(drone, result);
@@ -50,7 +53,8 @@ public class DroneControllerTest {
         drone.setId(1L);
         when(droneService.createOrUpdateDrone(any(Drone.class))).thenReturn(drone);
 
-        Drone result = droneController.updateDrone(drone);
+        ResponseDTO responseDTO = droneController.updateDrone(drone).getBody();
+        Drone result = (Drone) responseDTO.getData();
 
         verify(droneService, times(1)).createOrUpdateDrone(drone);
         assertEquals(drone, result);
@@ -63,7 +67,8 @@ public class DroneControllerTest {
         drone.setId(1L);
         when(droneService.getDroneById(1L)).thenReturn(drone);
 
-        Drone result = droneController.getById(1L);
+        ResponseDTO responseDTO = droneController.getById(1L).getBody();
+        Drone result = (Drone) responseDTO.getData();
 
         verify(droneService, times(1)).getDroneById(1L);
         assertEquals(drone, result);
@@ -79,7 +84,8 @@ public class DroneControllerTest {
         List<Drone> droneList = Arrays.asList(drone1, drone2);
         when(droneService.getAll()).thenReturn(droneList);
 
-        List<Drone> result = droneController.getAll();
+        ResponseDTO responseDTO = droneController.getAll().getBody();
+        List<Drone> result = (List<Drone>) responseDTO.getData();
 
         verify(droneService, times(1)).getAll();
         assertEquals(droneList, result);
@@ -88,12 +94,11 @@ public class DroneControllerTest {
     @Test
     @DisplayName("Delete drone by id")
     public void testDeleteDroneById() {
-        ResponseEntity<Void> expectedResponse = ResponseEntity.noContent().build();
         doNothing().when(droneService).deleteDroneById(1L);
 
-        ResponseEntity<Void> result = droneController.deleteById(1L);
+        ResponseDTO responseDTO = droneController.deleteById(1L).getBody();
 
         verify(droneService, times(1)).deleteDroneById(1L);
-        assertEquals(expectedResponse, result);
+        assertEquals(ResponseMessage.SUCCESSFULLY_DELETE, responseDTO.getMessage());
     }
 }

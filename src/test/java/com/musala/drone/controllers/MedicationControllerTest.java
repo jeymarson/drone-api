@@ -1,5 +1,7 @@
 package com.musala.drone.controllers;
 
+import com.musala.drone.constants.ResponseMessage;
+import com.musala.drone.dtos.ResponseDTO;
 import com.musala.drone.models.Medication;
 import com.musala.drone.services.MedicationService;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +37,8 @@ public class MedicationControllerTest {
         medication.setId(1L);
         when(medicationService.createOrUpdateMedication(any(Medication.class))).thenReturn(medication);
 
-        Medication result = medicationController.createMedication(medication).getBody();
+        ResponseDTO responseDTO = medicationController.createMedication(medication).getBody();
+        Medication result = (Medication) responseDTO.getData();
 
         verify(medicationService, times(1)).createOrUpdateMedication(medication);
         assertEquals(medication, result);
@@ -48,7 +51,8 @@ public class MedicationControllerTest {
         medication.setId(1L);
         when(medicationService.createOrUpdateMedication(any(Medication.class))).thenReturn(medication);
 
-        Medication result = medicationController.updateMedication(1l, medication).getBody();
+        ResponseDTO responseDTO = medicationController.updateMedication(medication).getBody();
+        Medication result = (Medication) responseDTO.getData();
 
         verify(medicationService, times(1)).createOrUpdateMedication(medication);
         assertEquals(medication, result);
@@ -61,7 +65,8 @@ public class MedicationControllerTest {
         medication.setId(1L);
         when(medicationService.getMedicationById(1L)).thenReturn(medication);
 
-        Medication result = medicationController.getMedicationById(1L).getBody();
+        ResponseDTO responseDTO = medicationController.getMedicationById(1L).getBody();
+        Medication result = (Medication) responseDTO.getData();
 
         verify(medicationService, times(1)).getMedicationById(1L);
         assertEquals(medication, result);
@@ -76,7 +81,8 @@ public class MedicationControllerTest {
         List<Medication> droneList = Arrays.asList(medication1, medication2);
         when(medicationService.getAll()).thenReturn(droneList);
 
-        List<Medication> result = medicationController.getAllMedications().getBody();
+        ResponseDTO responseDTO = medicationController.getAllMedications().getBody();
+        List<Medication> result = (List<Medication>) responseDTO.getData();
 
         verify(medicationService, times(1)).getAll();
         assertEquals(droneList, result);
@@ -84,12 +90,11 @@ public class MedicationControllerTest {
 
     @Test
     public void testDeleteMedicationById() {
-        ResponseEntity<Void> expectedResponse = ResponseEntity.noContent().build();
         doNothing().when(medicationService).deleteMedicationById(1L);
 
-        ResponseEntity<Void> result = medicationController.deleteMedication(1L);
+        ResponseDTO responseDTO = medicationController.deleteMedication(1L).getBody();
 
         verify(medicationService, times(1)).deleteMedicationById(1L);
-        assertEquals(expectedResponse, result);
+        assertEquals(ResponseMessage.SUCCESSFULLY_DELETE, responseDTO.getMessage());
     }
 }

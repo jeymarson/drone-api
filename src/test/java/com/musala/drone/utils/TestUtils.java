@@ -45,7 +45,7 @@ public class TestUtils {
 
     public static Medication getMockMedication() {
         Medication medication = new Medication();
-        medication.setCode("CPDPOO02990373MKD");
+        medication.setCode(UUID.randomUUID().toString());
         medication.setImage("https://test_url");
         medication.setWeight(22.3);
         medication.setName("Test medication");

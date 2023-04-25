@@ -3,3 +3,7 @@ databaseChangeLog:
       file: db/changelog/create_table_drone.yaml
   - include:
       file: db/changelog/create_table_medication.yaml
+  - include:
+      file: db/changelog/create_table_operation.yaml
+  - include:
+      file: db/changelog/create_table_operation_medication.yaml

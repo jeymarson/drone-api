@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_table_operation_medication
+      author: JeymarsonGarcia
+      changes:
+        - createTable:
+            tableName: operation_medication
+            columns:
+              - column:
+                  name: operation_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: medication_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+            primaryKey:
+              columnNames: [operation_id, medication_id]
+        - addForeignKeyConstraint:
+            baseTableName: operation_medication
+            baseColumnNames: operation_id
+            referencedTableName: operation
+            referencedColumnNames: id
+            constraintName: fk_operation_medication_operation
+        - addForeignKeyConstraint:
+            baseTableName: operation_medication
+            baseColumnNames: medication_id
+            referencedTableName: medication
+            referencedColumnNames: id
+            constraintName: fk_operation_medication_medication

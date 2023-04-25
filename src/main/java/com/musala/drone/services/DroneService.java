@@ -7,8 +7,10 @@ import com.musala.drone.repositories.DroneRepository;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -21,6 +23,10 @@ public class DroneService {
     }
 
     public Drone createOrUpdateDrone(Drone drone) {
+        if (Objects.isNull(drone.getCreatedAt())) {
+            drone.setCreatedAt(ZonedDateTime.now().toLocalDateTime());
+        }
+
         return this.droneRepository.save(drone);
     }
 

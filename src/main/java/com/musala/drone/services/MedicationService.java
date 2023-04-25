@@ -6,7 +6,9 @@ import com.musala.drone.repositories.MedicationRepository;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -19,6 +21,9 @@ public class MedicationService {
     }
 
     public Medication createOrUpdateMedication(Medication medication) {
+        if (Objects.isNull(medication.getCreatedAt())) {
+            medication.setCreatedAt(ZonedDateTime.now().toLocalDateTime());
+        }
         return this.medicationRepository.save(medication);
     }
 

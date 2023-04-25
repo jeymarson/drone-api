@@ -78,6 +78,7 @@ public class OperationService {
         int battery = drone.getBatteryCapacity() - 15;
 
         drone.setState(battery < 25 ? DroneState.LOADING : DroneState.IDLE);
+        drone.setBatteryCapacity(battery);
 
         this.droneService.createOrUpdateDrone(drone);
 

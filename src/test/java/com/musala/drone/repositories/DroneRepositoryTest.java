@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +51,9 @@ public class DroneRepositoryTest {
     @Test
     public void createTwoDroneWithSameSerialShouldThrownException() {
         Drone droneOne = getMockDrone();
+        droneOne.setSerialNumber("11111111111122222222");
         Drone droneTwo = getMockDrone();
+        droneTwo.setSerialNumber("11111111111122222222");
         this.droneRepository.save(droneOne);
         DataIntegrityViolationException exception = assertThrows(DataIntegrityViolationException.class, () -> {
             this.droneRepository.save(droneTwo);
@@ -93,7 +94,7 @@ public class DroneRepositoryTest {
         this.droneRepository.save(getMockDroneWithBatteryAndState(90, DroneState.DELIVERED));
         this.droneRepository.save(getMockDroneWithBatteryAndState(20, DroneState.DELIVERED));
 
-        List<Drone> drones = this.droneRepository.findAllByStateInAndBatteryCapacityGreaterThanEqual(Arrays.asList(DroneState.DELIVERED), 25);
+        List<Drone> drones = this.droneRepository.findAllByStateInAndBatteryCapacityGreaterThanEqual(List.of(DroneState.DELIVERED), 25);
 
         assertEquals(1, drones.size());
     }

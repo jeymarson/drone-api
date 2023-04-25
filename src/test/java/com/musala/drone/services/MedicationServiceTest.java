@@ -3,7 +3,6 @@ package com.musala.drone.services;
 import com.musala.drone.exceptions.ResourceNotFoundException;
 import com.musala.drone.models.Medication;
 import com.musala.drone.repositories.MedicationRepository;
-import com.musala.drone.services.MedicationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -26,7 +25,7 @@ public class MedicationServiceTest {
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         this.medicationService = new MedicationService(this.medicationRepository);
     }
 

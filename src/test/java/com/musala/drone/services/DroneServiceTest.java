@@ -40,7 +40,7 @@ public class DroneServiceTest {
     @Test
     public void whenCreateDroneShouldWorkCorrectly() {
         Drone drone = getMockDrone();
-        drone.setId(1l);
+        drone.setId(1L);
         when(this.droneRepository.save(Mockito.any(Drone.class))).thenReturn(drone);
 
         Drone saved = this.droneService.createOrUpdateDrone(new Drone());
@@ -64,34 +64,34 @@ public class DroneServiceTest {
     @Test
     public void whenGetByIdShouldWorksCorrectly() {
         Drone drone = getMockDrone();
-        drone.setId(1l);
+        drone.setId(1L);
 
-        when(this.droneRepository.findById(Mockito.eq(1l))).thenReturn(Optional.of(drone));
+        when(this.droneRepository.findById(Mockito.eq(1L))).thenReturn(Optional.of(drone));
 
-        Drone found = this.droneService.getDroneById(1l);
+        Drone found = this.droneService.getDroneById(1L);
 
-        verify(this.droneRepository, times(1)).findById(Mockito.eq(1l));
+        verify(this.droneRepository, times(1)).findById(Mockito.eq(1L));
         assertNotNull(found);
-        assertEquals(1l, found.getId());
+        assertEquals(1L, found.getId());
     }
 
     @Test
     public void whenGetByIdIsEmptyShouldThrownException() {
-        when(this.droneRepository.findById(Mockito.eq(1l))).thenReturn(Optional.empty());
+        when(this.droneRepository.findById(Mockito.eq(1L))).thenReturn(Optional.empty());
 
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
-            this.droneService.getDroneById(1l);
+            this.droneService.getDroneById(1L);
         });
 
-        verify(this.droneRepository, times(1)).findById(Mockito.eq(1l));
+        verify(this.droneRepository, times(1)).findById(Mockito.eq(1L));
         assertNotNull(exception);
         assertEquals("Drone not found", exception.getMessage());
     }
 
     @Test
     public void whenDeleteDroneByIdShouldWorksCorrectly() {
-        this.droneService.deleteDroneById(1l);
-        verify(this.droneRepository, times(1)).deleteById(Mockito.eq(1l));
+        this.droneService.deleteDroneById(1L);
+        verify(this.droneRepository, times(1)).deleteById(Mockito.eq(1L));
     }
 
     @Test

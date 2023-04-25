@@ -9,7 +9,6 @@ import com.musala.drone.models.Operation;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
@@ -22,7 +21,7 @@ public class TestUtils {
         drone.setModel(DroneModel.CRUISERWEIGHT);
         drone.setState(DroneState.IDLE);
         drone.setSerialNumber(UUID.randomUUID().toString());
-        drone.setWeightLimit(345.0f);
+        drone.setWeightLimit(345.0F);
         drone.setCreatedAt(ZonedDateTime.now().toLocalDateTime());
 
         return drone;

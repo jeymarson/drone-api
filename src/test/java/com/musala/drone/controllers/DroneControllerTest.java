@@ -9,7 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -81,7 +80,7 @@ public class DroneControllerTest {
         drone1.setId(1L);
         Drone drone2 = getMockDrone();
         drone2.setId(2L);
-        List<Drone> droneList = Arrays.asList(drone1, drone2);
+        List<Drone> droneList = List.of(drone1, drone2);
         when(droneService.getAll()).thenReturn(droneList);
 
         ResponseDTO responseDTO = droneController.getAll().getBody();
@@ -109,7 +108,7 @@ public class DroneControllerTest {
         drone1.setId(1L);
         Drone drone2 = getMockDrone();
         drone2.setId(2L);
-        List<Drone> droneList = Arrays.asList(drone1, drone2);
+        List<Drone> droneList = List.of(drone1, drone2);
         when(droneService.getAvailableDrones()).thenReturn(droneList);
 
         ResponseDTO responseDTO = droneController.getAvailableDrones().getBody();

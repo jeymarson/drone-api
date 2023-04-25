@@ -2,6 +2,7 @@ package com.musala.drone.services;
 
 import com.musala.drone.constants.DroneState;
 import com.musala.drone.dtos.CreateOperationDTO;
+import com.musala.drone.dtos.DroneWithMedsDTO;
 import com.musala.drone.exceptions.OperationNotAllowedException;
 import com.musala.drone.exceptions.ResourceNotFoundException;
 import com.musala.drone.models.Drone;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,7 +89,7 @@ public class OperationService {
             throw new OperationNotAllowedException("The drone does not have enough battery to perform the operation.");
         }
 
-        if (Arrays.asList(DroneState.LOADING, DroneState.DELIVERING, DroneState.RETURNING).contains(drone.getState())) {
+        if (List.of(DroneState.LOADING, DroneState.DELIVERING, DroneState.RETURNING).contains(drone.getState())) {
             throw new OperationNotAllowedException("The drone does not allowed.");
         }
 
@@ -98,6 +98,22 @@ public class OperationService {
         if (weight > drone.getWeightLimit()) {
             throw new OperationNotAllowedException("The weight of the medicines exceeds the limit weight of the drone.");
         }
+    }
+
+    public DroneWithMedsDTO getMedicationOnDrone(Long droneId) {
+        Drone drone = this.droneService.getDroneById(droneId);
+        Optional<Operation> operation = this.operationRepository.findFirstByDroneAndTerminatedAtIsNullOrderByTerminatedAtDesc(drone);
+
+        if (operation.isEmpty()) {
+            throw new ResourceNotFoundException("Operation");
+        }
+
+        DroneWithMedsDTO droneWithMedsDTO = new DroneWithMedsDTO();
+        droneWithMedsDTO.setOperationId(operation.get().getId());
+        droneWithMedsDTO.setMedications(operation.get().getMedications());
+        droneWithMedsDTO.setDrone(drone);
+
+        return droneWithMedsDTO;
     }
 
 }

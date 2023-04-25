@@ -9,9 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.ResponseEntity;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.musala.drone.utils.TestUtils.getMockMedication;
@@ -78,7 +76,7 @@ public class MedicationControllerTest {
         medication1.setId(1L);
         Medication medication2 = getMockMedication();
         medication2.setId(2L);
-        List<Medication> droneList = Arrays.asList(medication1, medication2);
+        List<Medication> droneList = List.of(medication1, medication2);
         when(medicationService.getAll()).thenReturn(droneList);
 
         ResponseDTO responseDTO = medicationController.getAllMedications().getBody();

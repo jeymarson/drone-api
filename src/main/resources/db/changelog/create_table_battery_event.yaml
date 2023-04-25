@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_battery_event
+      author: JeymarsonGarcia
+      changes:
+        - createTable:
+            tableName: battery_event
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: drone_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: prev_state
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: new_state
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValue: now()
+                  constraints:
+                    nullable: false
+            foreignKeys:
+              - foreignKey:
+                  name: fk_operation_drone
+                  referencedTableName: drone
+                  referencedColumnNames: id
+                  baseColumnNames: drone_id

@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/create_table_operation.yaml
   - include:
       file: db/changelog/create_table_operation_medication.yaml
+  - include:
+      file: db/changelog/create_table_battery_event.yaml

@@ -4,10 +4,12 @@ import com.musala.drone.constants.DroneModel;
 import com.musala.drone.constants.DroneState;
 import com.musala.drone.models.Drone;
 import com.musala.drone.models.Medication;
+import com.musala.drone.models.Operation;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
@@ -52,5 +54,23 @@ public class TestUtils {
         medication.setCreatedAt(ZonedDateTime.now().toLocalDateTime());
 
         return  medication;
+    }
+
+    public static List<Medication> getListMockMedication(int count) {
+        List<Medication> medications = new ArrayList<>();
+        IntStream.range(0, count).forEach(i -> {
+            medications.add(getMockMedication());
+        });
+
+        return medications;
+    }
+
+    private static Operation getMockOperation(Drone drone, List<Medication> medications) {
+        Operation operation = new Operation();
+        operation.setCreatedAt(ZonedDateTime.now().toLocalDateTime());
+        operation.setDrone(drone);
+        operation.setMedications(medications);
+
+        return  operation;
     }
 }

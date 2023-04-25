@@ -22,6 +22,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(responseDTO);
     }
 
+    @ExceptionHandler(value = {OperationNotAllowedException.class})
+    protected ResponseEntity<ResponseDTO> handleNotNullProperty(OperationNotAllowedException exception) {
+
+        ResponseDTO responseDTO = new ResponseDTO(HttpStatus.BAD_REQUEST.value(), exception.getLocalizedMessage(), null, Collections.singletonList(exception.getMessage()));
+
+        return ResponseEntity.badRequest().body(responseDTO);
+    }
+
     @ExceptionHandler(value = {ResourceNotFoundException.class})
     protected ResponseEntity<ResponseDTO> handleNotNullProperty(ResourceNotFoundException exception) {
 

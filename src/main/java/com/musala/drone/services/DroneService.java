@@ -43,6 +43,6 @@ public class DroneService {
     }
 
     public List<Drone> getAvailableDrones() {
-        return  this.droneRepository.findAllByStateInAndBatteryCapacityGreaterThanEqual(Arrays.asList(DroneState.DELIVERED, DroneState.IDLE), 25);
+        return  this.droneRepository.findAllByStateInAndBatteryCapacityGreaterThanEqual(Arrays.asList(DroneState.LOADED, DroneState.IDLE), 25);
     }
 }

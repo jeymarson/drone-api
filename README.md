@@ -1,6 +1,17 @@
-# Drone API
+# DRONE API
 
 This API allows you to add a new drone to the list of drones, add a medication and create operations for drones and medications.
+
+## Pre requirements
+
+- docker
+
+## How to run
+
+```
+docker-compose up
+```
+Host: localhost:8080
 
 ## Create drone
 

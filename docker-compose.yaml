@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: drone
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: musala
+    networks:
+      springboot-mysql-net:
+
+  springboot-restful-webservices:
+    container_name: springboot-restful-webservices
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysqldb
+    environment:
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: drone
+      MYSQL_USER: root
+      MYSQL_PORT: 3306
+      MYSQL_HOST: mysqldb
+    networks:
+      springboot-mysql-net:
+    restart: on-failure
+
+networks:
+  springboot-mysql-net:

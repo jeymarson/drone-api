@@ -16,9 +16,10 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
-import static com.musala.drone.utils.TestUtils.getMockDrone;
-import static com.musala.drone.utils.TestUtils.getMockMedication;
+import static com.musala.drone.utils.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -163,5 +164,71 @@ public class OperationServiceTest {
         verify(this.medicationService, times(2)).getMedicationById(Mockito.any());
 
         assertNotNull(operation);
+    }
+
+    @Test
+    public void getOperationByIdShouldWorksCorrectly() {
+        when(this.operationRepository.findById(Mockito.eq(1l))).thenReturn(Optional.of(new Operation()));
+
+        Operation operation = this.operationService.getOperationById(1l);
+
+        verify(this.operationRepository, times(1)).findById(Mockito.eq(1l));
+        assertNotNull(operation);
+    }
+
+    @Test
+    public void getOperationByIdShouldReturnsException() {
+        when(this.operationRepository.findById(Mockito.eq(1l))).thenReturn(Optional.empty());
+
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+            this.operationService.getOperationById(1l);
+        });
+
+        verify(this.operationRepository, times(1)).findById(Mockito.eq(1l));
+        assertNotNull(exception);
+    }
+
+    @Test
+    public void getOpenOperationsByIdShouldWorksCorrectly() {
+        when(this.operationRepository.findAllByTerminatedAtIsNull()).thenReturn(Collections.singletonList(new Operation()));
+
+        List<Operation> operations = this.operationService.getOpenOperations();
+
+        verify(this.operationRepository, times(1)).findAllByTerminatedAtIsNull();
+        assertNotNull(operations);
+        assertEquals(1, operations.size());
+    }
+
+    @Test
+    public void finishOperationShouldWorksCorrectly() {
+        Drone drone = getMockDrone();
+        drone.setId(1l);
+
+        Operation operation = getMockOperation(drone, Collections.emptyList());
+
+        when(this.operationRepository.findById(Mockito.eq(1l))).thenReturn(Optional.of(operation));
+        when(this.droneService.createOrUpdateDrone(Mockito.any(Drone.class))).thenReturn(drone);
+        when(this.operationRepository.save(Mockito.any(Operation.class))).thenReturn(operation);
+
+        Operation operationSaved = this.operationService.finishOperation(1l);
+
+        verify(this.operationRepository, times(1)).findById(Mockito.eq(1l));
+        verify(this.droneService, times(1)).createOrUpdateDrone(Mockito.any());
+        verify(this.operationRepository, times(1)).save(Mockito.any());
+
+        assertNotNull(operationSaved);
+    }
+
+    @Test
+    public void finishOperationThrownException() {
+        when(this.operationRepository.findById(Mockito.eq(1l))).thenReturn(Optional.empty());
+
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+            this.operationService.finishOperation(1l);
+        });
+
+        verify(this.operationRepository, times(1)).findById(Mockito.eq(1l));
+
+        assertNotNull(exception);
     }
 }

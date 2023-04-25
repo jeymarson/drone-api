@@ -65,7 +65,7 @@ public class TestUtils {
         return medications;
     }
 
-    private static Operation getMockOperation(Drone drone, List<Medication> medications) {
+    public static Operation getMockOperation(Drone drone, List<Medication> medications) {
         Operation operation = new Operation();
         operation.setCreatedAt(ZonedDateTime.now().toLocalDateTime());
         operation.setDrone(drone);
